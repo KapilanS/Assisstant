@@ -1,0 +1,41 @@
+# BFSI Call Center AI Assistant - Configuration
+# All paths and thresholds are configurable for maintainability
+
+system:
+  name: BFSI Call Center AI Assistant
+  version: "1.0"
+  compliance_mode: strict
+
+# Response priority thresholds
+similarity:
+  dataset_path: "data/alpaca_dataset.json"
+  threshold: 0.85          # Strong match threshold (0-1)
+  embedding_model: "sentence-transformers/all-MiniLM-L6-v2"  # Lightweight, local
+  top_k: 3                 # Consider top K matches
+
+# SLM configuration
+slm:
+  model_name: "TinyLlama/TinyLlama-1.1B-Chat-v1.0"  # Lightweight, runs on modest hardware
+  weights_path: "models/slm_weights"
+  max_new_tokens: 256
+  temperature: 0.3
+  use_finetuned: true     # Use fine-tuned weights when available
+
+# RAG configuration
+rag:
+  knowledge_base_path: "data/rag_knowledge"
+  embedding_model: "sentence-transformers/all-MiniLM-L6-v2"
+  similarity_threshold: 0.7
+  max_context_chunks: 4
+
+# Guardrails
+guardrails:
+  reject_queries_containing:
+    - "password"
+    - "pin"
+    - "cvv"
+    - "account number"
+    - "ssn"
+    - "social security"
+  out_of_domain_keywords: []  # Extensible list
+  max_query_length: 512
